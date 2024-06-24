@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Закрыватель рта</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/index.html">Мои проекты</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/index.html">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/catalog.html">Каталог</a>
+                </li>
+                </ul>
+                <span class="navbar-text">
+                    Это сайт моих учебных проектов
+                </span>
+            </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-4">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index.html">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Закройте рот!</li>
+            </ol>
+        </nav>
+        <!-- заголовок -->
+        <div class="row text-center mt-3 mb-4">
+            <div class="col"></div>
+            <div class="col-8">
+                <h2>Закройте чей-то рот онлайн!</h2>
+                <p>Закрыть чей-то рот еще никогда не было так легко.</p>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <!-- Ввод -->
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6" style="display: block;">
+            <p class="h6 mb-3"> Введите имя человека, которому необходимо закрыть рот и нажмите на кнопку "Закрыть рот".</p>
+                <label for="myInput" class="form-label"> Имя человека</label>
+                <input oninput="checkInputAndDisableButton()" class="form-control" id="myInput" type="text" placeholder="Иван">
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    Введите имя
+                </div>
+                <button id="buttonClose" type="submit" onclick="emptyInput(); closeMouth();" class="btn btn-primary mt-3" style="width: 100%;" >Закрыть рот</button>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <!-- алерты -->
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col-6 text-center">
+                <!-- алерт закрытия -->
+                <div id="alertClose" class="alert alert-danger" role="alert" style="display:none;">
+                    Вы успешно закрыли рот <span id="openName"></span> <br>
+                    <button id="openButton" onclick="toggleMouth()" class="btn btn-danger">Открыть</button>
+                </div>
+                <!-- алерт открытия -->
+                <div id="alertOpen" class="alert alert-success" role="alert" style="display:none;">
+                    Вы успешно открыли рот <span id="closeName"></span> <br>
+                    <button id="closeButton" onclick="toggleMouth()" class="btn btn-success">Закрыть</button>
+                </div>
+                <button id="buttonReset" type="button" onclick="resetState()" class="btn btn-secondary" style="width: 100%; display: none;">Сбросить</button>
+            </div>
+            <div class="col"></div>
+        </div>
+
+    </div>
+
+    <script>
+        function emptyInput() {
+            let input = document.getElementById('myInput');
+            let inputValue = input.value
+            let button = document.getElementById('buttonClose');
+
+            if (inputValue === '') {
+                button.classList.add('disabled');
+                input.classList.add('is-invalid');
+            } else {
+                button.classList.remove('disabled');
+                input.classList.remove('is-invalid');
+                }
+
+            setTimeout(() => {
+                input.classList.remove('is-invalid');
+                button.classList.remove('disabled');
+            }, 1000);
+}
+        
+        function closeMouth() {
+            let button = document.getElementById('buttonClose');
+            let openAlert = document.getElementById('alertOpen');
+            let openAlertName = document.getElementById('openName')
+            let closeAlertName = document.getElementById('closeName')
+            let closeAlert = document.getElementById('alertClose');
+            let input = document.getElementById('myInput');
+            let inputValue = input.value;
+            let buttonReset = document.getElementById('buttonReset');
+
+            if (button.classList.contains('disabled')) {
+                return; // Прерываем выполнение функции, если кнопка отключена
+            }
+    
+            if(openAlert.style.display === 'none') {
+                openAlert.style.display = 'none';
+                openAlertName.textContent = inputValue;
+                closeAlertName.textContent = inputValue;
+                closeAlert.style.display = 'block';
+                button.style.display = 'none';
+                button.textContent = 'Рот успешно закрыт!';
+                buttonReset.style.display = 'block';
+                input.value = '';
+            } else {
+                openAlert.style.display = 'block';
+                openAlertName.textContent = inputValue;
+                closeAlertName.textContent = inputValue;
+                closeAlert.style.display = 'none';
+                button.classList.add('disabled');
+                button.textContent = 'Рот успешно закрыт!';
+                buttonReset.style.display = 'block';
+                input.value = '';
+            }
+        }
+
+        function resetState() {
+            let button = document.getElementById('buttonClose');
+            let buttonReset = document.getElementById('buttonReset');
+            let openAlert = document.getElementById('alertOpen');
+            let closeAlert = document.getElementById('alertClose');
+
+            button.style.display = 'block';
+            button.textContent = 'Закрыть рот';
+            buttonReset.style.display = 'none';
+            openAlert.style.display = 'none';
+            closeAlert.style.display = 'none';
+        }
+
+        function toggleMouth() {
+            let openerButton = document.getElementById('openButton');
+            let closerButton = document.getElementById('closeButton');
+            let openAlert = document.getElementById('alertOpen');
+            let closeAlert = document.getElementById('alertClose');
+            let buttonReset = document.getElementById('buttonReset');
+
+            if(openAlert.style.display === 'none') {
+                closeAlert.style.display = 'none';
+                openAlert.style.display = 'block';
+                buttonReset.style.display = 'block';
+            } else {
+                closeAlert.style.display = 'block';
+                openAlert.style.display = 'none';
+                buttonReset.style.display = 'block';
+            }
+        }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
